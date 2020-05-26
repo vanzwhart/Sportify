@@ -1,0 +1,35 @@
+﻿.checkbox input[type="checkboxcustom"],
+.checkbox-inline input[type="checkboxcustom"] {
+    position: absolute;
+    margin-top: 4px \9;
+    margin-left: -20px;
+}
+
+.radio + .radio,
+.checkbox + .checkbox {
+    margin-top: -5px;
+}
+
+.radio-inline,
+.checkbox-inline {
+    position: relative;
+    display: inline-block;
+    padding-left: 20px;
+    margin-bottom: 0;
+    font-weight: 400;
+    vertical-align: middle;
+    cursor: pointer;
+}
+
+    .radio-inline.disabled,
+    .checkbox-inline.disabled,
+    fieldset[disabled] .radio-inline,
+    fieldset[disabled] .checkbox-inline {
+        cursor: not-allowed;
+    }
+
+    .radio-inline + .radio-inline,
+    .checkbox-inline + .checkbox-inline {
+        margin-top: 0;
+        margin-left: 10px;
+    }

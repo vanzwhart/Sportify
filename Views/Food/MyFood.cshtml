@@ -1,0 +1,94 @@
+﻿
+<div class="row">
+    <div class="col-12">
+        <div class="card">
+            <div class="card-body">
+                <h4 class="card-title">My Food List</h4>
+                <h6 class="card-subtitle"></h6>
+                <div class="table-responsive">
+                    <table id="myfoods" class="display responsive nowrap" cellspacing="0" style="width:100%">
+                        <thead>
+                            <tr>
+                                <th>Name</th>
+                                <th>Calories</th>
+                                <th>Action</th>
+
+                            </tr>
+                        </thead>
+
+
+                    </table>
+                    <h4>Recommended Calories = @ViewBag.RecCalories</h4>
+                    <h4>My Food Calories = @ViewBag.MyCalories</h4>
+                </div>
+                
+            </div>
+        </div>
+    </div>
+</div>
+@section scripts{
+    @Scripts.Render("~/bundles/jqueryval")
+
+    <script>
+
+        $(document).ready(function () {
+            var vm = {};
+
+           
+            var table = $("#myfoods").DataTable({
+            
+                ajax: {
+                    url: "/api/myfood/@Session["UserId"]",
+                dataSrc: ""
+            },
+            columns: [
+                {
+                    data:"food.foodName"
+                },
+                {
+                    data: "food.foodCalories"
+                },
+
+                {
+                    data: "myFoodId",
+                    render: function (data) {
+                        return"</button><button class='fas fa-trash-alt js-delete' data-myfood-id=" + data + "></button>";
+                    }
+                }
+            ]
+            })
+
+           
+
+
+         
+            $("#myfoods").on("click", ".js-delete", function () {
+                var button = $(this);
+
+                bootbox.confirm("Are you sure want to delete this food?", function (result) {
+                    if (result) {
+                        $.ajax({
+                            url: "/api/myfood/" + button.attr("data-myfood-id"),
+                            method: "DELETE",
+                            success: function () {
+                                table.row(button.parents("tr")).remove().draw();
+                                table.ajax.reload();
+                                toastr.success("Food Successfully Deleted");
+
+                            }
+
+                        });
+                    }
+                });
+
+            });
+
+
+    });
+
+    </script>
+
+}
+
+
+

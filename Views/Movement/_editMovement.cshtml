@@ -1,0 +1,104 @@
+﻿@model MyFitness.Models.AddProgram
+
+    <div class="modal-dialog" role="document">
+        @using (Html.BeginForm("EditMovement", "Movement", FormMethod.Post, new { enctype = "multipart/form-data" }))
+        {
+            @Html.AntiForgeryToken()
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h4 class="modal-title" id="exampleModalLabel">Edit Movement</h4>
+                    <button type="button" class="close modal-close-button" data-dismiss="modal" aria-label="Close">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
+                </div>
+
+                <div class="modal-body">
+
+                    <form>
+                        <div class="form-group">
+                            @Html.LabelFor(m => m.NamaProgram, new { @class = "control-label" })
+                            @Html.TextBoxFor(m => m.NamaProgram, new { @class = "form-control", required = "required" , @value = Model.NamaProgram})
+                        </div>
+                        <div class="form-group">
+                            @Html.LabelFor(m => m.Deskripsi, new { @class = "control-label" })
+                            @Html.TextAreaFor(m => m.Deskripsi, new { @class = "form-control" , @value = Model.Deskripsi})
+                        </div>
+
+                        <div class="form-group">
+                            @Html.LabelFor(m => m.FotoGerakan, new { @class = "control-label" })
+                            @Html.TextBoxFor(model => model.FotoGerakan, new { type = "file", @class = "input-file form-control", name = "logo" })
+
+                        </div>
+                        <div class="row">
+                            <div class="col-md-6">
+                                <div class="form-group">
+                                    <label class="control-label">Type</label>
+                                    <select name="JenisAlat" class="form-control custom-select">
+                                        <option value="Gym">Gym</option>
+                                        <option value="Home">Home</option>
+                                    </select>
+                                    <small class="form-control-feedback"> Select Type </small>
+                                </div>
+                            </div>
+                            <div class="col-md-6">
+                                <div class="form-group">
+                                    <label class="control-label">Gender</label>
+                                    <select name="JenisKelamin" class="form-control custom-select">
+                                        <option value="Male">Male</option>
+                                        <option value="Female">Female</option>
+                                    </select>
+                                    <small class="form-control-feedback"> Select your gender </small>
+                                </div>
+                            </div>
+                            <div class="col-md-6">
+                                <div class="form-group">
+                                    <label class="control-label">Tingkatan</label>
+                                    <select name="Tingkatan" class="form-control custom-select">
+                                        <option name="tingkatan" value="1">Amateur</option>
+                                        <option name="tingkatan" value="2">Beginner</option>
+                                        <option name="tingkatan" value="3">Profesional</option>
+                                    </select>
+
+                                </div>
+                            </div>
+
+                            <div class="col-md-6">
+                                <div class="form-group">
+                                    @Html.EditorFor(m => m.Dada)
+                                    @Html.LabelFor(m => m.Dada)
+                                    <br />
+                                    @Html.EditorFor(m => m.Bahu)
+                                    @Html.LabelFor(m => m.Bahu)
+                                    <br />
+                                    @Html.EditorFor(m => m.Punggung)
+                                    @Html.LabelFor(m => m.Punggung)
+                                    <br />
+                                    @Html.EditorFor(m => m.Kaki)
+                                    @Html.LabelFor(m => m.Kaki)
+                                    <br />
+                                    @Html.EditorFor(m => m.Bokong)
+                                    @Html.LabelFor(m => m.Bokong)
+                                    <br />
+                                    @Html.EditorFor(m => m.Perut)
+                                    @Html.LabelFor(m => m.Perut)
+                                    <br />
+                                    @Html.EditorFor(m => m.LenganBicep)
+                                    @Html.LabelFor(m => m.LenganBicep)
+                                    <br />
+                                    @Html.EditorFor(m => m.LenganTricep)
+                                    @Html.LabelFor(m => m.LenganTricep)
+
+                                </div>
+                            </div>
+                        </div>
+
+
+                    </form>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+                    <button type="submit" class="btn btn-primary">Submit</button>
+                </div>
+            </div>
+        }
+    </div>

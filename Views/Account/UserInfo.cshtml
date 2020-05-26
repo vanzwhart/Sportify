@@ -1,0 +1,157 @@
+﻿@{
+    Layout = null;
+}
+@model MyFitness.Models.UserInfo
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta name="description" content="">
+    <meta name="author" content="">
+    <link href="~/Contentpro/plugins/bootstrap/css/bootstrap.min.css" rel="stylesheet" />
+    <link href="~/Contentpro/css/style.css" rel="stylesheet">
+   
+    <link href="~/Contentpro/css/pages/file-upload.css" rel="stylesheet">
+    <link href="~/Contentpro/css/colors/default.css" id="theme" rel="stylesheet">
+
+</head>
+<body>
+    <div class="row">
+        @using (Html.BeginForm("AddUserInfo", "User", FormMethod.Post, new { enctype = "multipart/form-data" }))
+        {
+            @Html.AntiForgeryToken()
+            <div class="col-lg-12">
+                <div class="card">
+                    <div class="card-header bg-info">
+                        <h4 class="m-b-15 text-white">Person Info</h4>
+                    </div>
+                    <div class="card-body">
+                        <form action="#">
+                            <div class="form-body">
+                                <div class="row p-t-20">
+                                    <div class="col-md-6">
+                                        <div class="form-group">
+                                            <label class="control-label">Nama Lengkap</label>
+                                            @Html.TextBoxFor(m => m.NamaLengkap, new { @class = "form-control" })
+
+
+                                        </div>
+                                    </div>
+                                    <div class="col-md-6">
+                                        <div class="form-group">
+                                            <label class="control-label">Tanggal Lahir</label>
+                                            @Html.TextBoxFor(m => m.tanggal_lahir, new { @class = "form-control", @type = "date", placeholder = "dd/mm/yyyy" })
+
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="row">
+                                    <div class="col-md-6">
+                                        <div class="form-group">
+                                            <label class="control-label">Gender</label>
+                                            <select name="JenisKelamin" class="form-control custom-select">
+                                                <option value="Male">Male</option>
+                                                <option value="Female">Female</option>
+                                            </select>
+                                            <small class="form-control-feedback"> Select your gender </small>
+                                        </div>
+                                    </div>
+                                    <div class="col-md-6">
+                                        <div class="form-group">
+                                            <label class="control-label">Seberapa Sering Melakukan Aktifitas Olahraga dalam Satu Minggu</label>
+                                            <select name="Tingkatan" class="form-control custom-select">
+                                                <option name="tingkatan" value="1">Tidak Sama Sekali</option>
+                                                <option name="tingkatan" value="2">Cukup Aktif(Berolahraga 1-3 kali/seminggu)</option>
+                                                <option name="tingkatan" value="3">Aktif(Berolahraga 3-5 kali/seminggu)</option>
+                                            </select>
+
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="row">
+                                    <div class="col-md-6">
+                                        <div class="form-group">
+                                            <label class="control-label">Berat Badan</label>
+                                            @Html.TextBoxFor(m => m.BeratBadan, new { @class = "form-control", @type = "number", placeholder = "Kg" })
+
+
+                                        </div>
+                                    </div>
+                                    <div class="col-md-6">
+                                        <div class="form-group">
+                                            <label class="control-label">Tinggi Badan</label>
+                                            @Html.TextBoxFor(m => m.TinggiBadan, new { @class = "form-control", @type = "number", placeholder = "Cm" })
+
+
+                                        </div>
+                                    </div>
+
+                                    <div class="col-md-6" >
+                                        <div class="form-group ">
+                                            <label class="control-label">Peminatan Pembentukan Otot</label>
+                                            <br />
+                                            <small class="form-control-feedback"> Minimal 3 Peminatan Otot </small>
+                                            <br />
+                                            <div class="demo-checkbox">
+
+
+
+                                                @Html.EditorFor(m => m.Dada)
+                                                @Html.LabelFor(m => m.Dada)
+                                                <br />
+                                                @Html.EditorFor(m => m.Bahu)
+                                                @Html.LabelFor(m => m.Bahu)
+                                                <br />
+                                                @Html.EditorFor(m => m.Punggung)
+                                                @Html.LabelFor(m => m.Punggung)
+                                                <br />
+                                                @Html.EditorFor(m => m.Kaki)
+                                                @Html.LabelFor(m => m.Kaki)
+                                                <br />
+                                                @Html.EditorFor(m => m.Bokong)
+                                                @Html.LabelFor(m => m.Bokong)
+                                                <br />
+                                                @Html.EditorFor(m => m.Perut)
+                                                @Html.LabelFor(m => m.Perut)
+                                                <br />
+                                                @Html.EditorFor(m => m.LenganBicep)
+                                                @Html.LabelFor(m => m.LenganBicep)
+                                                <br />
+                                                @Html.EditorFor(m => m.LenganTricep)
+                                                @Html.LabelFor(m => m.LenganTricep)
+
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </form>
+                    </div>
+
+                    <div class="modal-footer text-left">
+                        <button type="button" class="btn btn-inverse">Cancel</button>
+                        <button type="submit" class="btn btn-success"> <i class="fa fa-check"></i> Submit</button>
+                    </div>
+                </div>
+            </div>
+        }
+    </div>
+
+    <script src="~/Contentpro/plugins/jquery/jquery.min.js"></script>
+    <script src="~/Contentpro/plugins/bootstrap/js/popper.min.js"></script>
+    <script src="~/Contentpro/plugins/bootstrap/js/bootstrap.min.js"></script>
+    <script src="js/perfect-scrollbar.jquery.min.js"></script>
+    <script src="js/waves.js"></script>
+    <script src="js/sidebarmenu.js"></script>
+    <script src="~/Contentpro/plugins/sticky-kit-master/dist/sticky-kit.min.js"></script>
+    <script src="~/Contentpro/plugins/sparkline/jquery.sparkline.min.js"></script>
+    <script src="js/custom.min.js"></script>
+    <script src="js/jasny-bootstrap.js"></script>
+    
+    <script src="~/Contentpro/plugins/styleswitcher/jQuery.style.switcher.js"></script>
+</body>
+
+</html>

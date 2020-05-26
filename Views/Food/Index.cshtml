@@ -1,0 +1,270 @@
+﻿
+
+
+<div class="row">
+    <div class="col-12">
+        <div class="card">
+            <div class="card-body">
+                <h4 class="card-title">Food List</h4>
+                <h6 class="card-subtitle"></h6>
+                <button type="button" class="btn btn-info btn-rounded m-t-10 float-right" data-toggle="modal" data-target="#add-food">Add New Food</button>
+
+                <div id="add-food" class="modal fade in" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+
+                    <div class="modal-dialog">
+                        <div class="modal-content">
+                            <div class="modal-header">
+                                <button type="button" class="close" data-dismiss="modal" aria-hidden="true">×</button>
+
+                                <h4 class="modal-title" id="myModalLabel">Add New Food</h4>
+                            </div>
+                            <div class="modal-body">
+                                <form class="form-horizontal form-material" id="addnewfood">
+                                    <div class="form-group">
+                                        <div class="col-md-12 m-b-20">
+                                            <input type="text" class="form-control" id="name" placeholder="Name" required>
+                                        </div>
+                                        <div class="col-md-12 m-b-20">
+                                            <input type="text" class="form-control" id="calories" placeholder="Calories" required>
+                                        </div>
+
+                                        <div class="modal-footer">
+                                            <button type="submit" id="submit" class="btn btn-info waves-effect" data-dismiss="modal">Submit</button>
+                                            <button type="button" class="btn btn-default waves-effect" data-dismiss="modal">Cancel</button>
+                                        </div>
+                                    </div>
+                                </form>
+                            </div>
+
+                        </div>
+                        <!-- /.modal-content -->
+                    </div>
+                    <!-- /.modal-dialog -->
+
+                </div>
+                <div id="edit-food" class="modal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+
+                    <div class="modal-dialog">
+                        <div class="modal-content">
+                            <div class="modal-header">
+                                <button type="button" class="close" data-dismiss="modal" aria-hidden="true">×</button>
+
+                                <h4 class="modal-title" id="myModalLabel">Edit Food</h4>
+                            </div>
+                            <div class="modal-body">
+                                <form class="form-horizontal form-material" id="editnewfood">
+                                    <div class="form-group">
+                                        <div class="col-md-12 m-b-20">
+                                            <input type="text" id="idedit" hidden />
+
+                                            <input type="text" class="form-control" id="nameedit" placeholder="Food Name" required>
+                                        </div>
+                                        <div class="col-md-12 m-b-20">
+                                            <input type="text" class="form-control" id="caledit" placeholder="Calories" required>
+                                        </div>
+
+                                        <div class="modal-footer">
+                                            <button type="submit" id="submitedit" class="btn btn-info waves-effect" data-dismiss="modal">Submit</button>
+                                            <button type="button" class="btn btn-default waves-effect" data-dismiss="modal">Cancel</button>
+                                        </div>
+                                    </div>
+                                </form>
+                            </div>
+
+                        </div>
+                        <!-- /.modal-content -->
+                    </div>
+                    <!-- /.modal-dialog -->
+
+                </div>
+                <!-- Add Contact Popup Model -->
+
+                <div class="table-responsive">
+                    <table id="foods" class="display responsive nowrap" cellspacing="0" style="width:100%">
+                        <thead>
+                            <tr>
+                                <th>Name</th>
+                                <th>Calories</th>
+                                <th>Action</th>
+                            </tr>
+                        </thead>
+
+
+                    </table>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+@section scripts{
+    @Scripts.Render("~/bundles/jqueryval")
+
+<script>
+
+        $(document).ready(function () {
+            var vm = {};
+            var mf = {};
+
+
+
+            var table = $("#foods").DataTable({
+
+            ajax: {
+                url: "/api/food",
+                dataSrc: ""
+            },
+            columns: [
+                {
+                    data:"foodName"
+                },
+                {
+                    data: "foodCalories"
+                },
+
+                {
+                    data: "foodId",
+                    render: function (data) {
+                        return "<button class='far fa-edit js-edit' data-toggle='modal' data-food-id=" + data + "></button><button class='fas fa-trash-alt js-delete' data-food-id=" + data + "></button><button class='fas fa-plus-circle js-add' data-food-id=" + data + "></button>";
+                    }
+                }
+            ]
+            })
+
+            function addFood() {
+                vm.foodName = $("#name").val();
+                vm.foodCalories = $("#calories").val();
+
+
+
+
+                $.ajax({
+                    url: "/api/food/",
+                    method: "post",
+                    data: vm
+                })
+                    .done(function () {
+                        table.ajax.reload();
+                        $('#add-food form :input').val("");
+
+                        toastr.success("Food Successfully Added");
+                    })
+                    .fail(function () {
+                        toastr.error("Something unexpected happened.");
+                    });
+            }
+
+
+
+            $("#submit").click(function (e) {
+                e.preventDefault();
+                addFood();
+
+            });
+
+
+            $("#foods").on("click", ".js-edit", function () {
+
+                var button = $(this);
+                $.ajax({
+                    url: "/api/food/update/" + button.attr("data-food-id"),
+                    method: "GET",
+                    success: function (response) {
+
+                        $("#nameedit").val(response.foodName);
+                        $("#caledit").val(response.foodCalories);
+
+                        $("#idedit").val(response.foodId);
+
+                        $("#edit-food").modal('show');
+                        console.log(response.foodId);
+                    }
+                });
+
+            });
+
+                $("#submitedit").click(function (e) {
+                var um = {};
+                e.preventDefault();
+
+                um.foodName = $("#nameedit").val();
+                um.foodCalories = $("#caledit").val();
+
+                    var id = $("#idedit").val();
+
+
+                    $.ajax({
+                    url: "/api/food/" + id ,
+                    method: "PUT",
+                    data: um
+                })
+                    .done(function () {
+                        table.ajax.reload();
+
+                        toastr.success("Food Successfully Edited");
+                    })
+                    .fail(function () {
+                        toastr.error("Something unexpected happened.");
+                    });
+
+                });
+
+            $("#foods").on("click", ".js-delete", function () {
+                var button = $(this);
+
+                bootbox.confirm("Are you sure want to delete this food?", function (result) {
+                    if (result) {
+                        $.ajax({
+                            url: "/api/food/" + button.attr("data-food-id"),
+                            method: "DELETE",
+                            success: function () {
+                                table.row(button.parents("tr")).remove().draw();
+                                table.ajax.reload();
+                                toastr.success("Food Successfully Deleted");
+
+                            }
+
+                        });
+                    }
+                });
+
+            });
+
+
+            $("#foods").on("click", ".js-add", function () {
+                var button = $(this);
+
+                bootbox.confirm("Are you sure want to add this food?", function (result) {
+                    if (result) {
+                         mf.foodId = button.attr("data-food-id");
+                         mf.userId = "@Session["UserId"]";
+                        $.ajax({
+                            url: "/api/myfood/",
+                            method: "post",
+                            data: mf
+                        })
+                            .done(function () {
+                                table.ajax.reload();
+                               
+
+                                toastr.success("Food Successfully Added");
+                            })
+                            .fail(function () {
+                                toastr.error("Something unexpected happened.");
+                            });
+                    }
+                });
+
+            });
+
+         
+
+
+
+    });
+
+</script>
+
+}
+
+
+

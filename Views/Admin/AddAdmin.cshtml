@@ -1,0 +1,111 @@
+﻿@model dynamic
+
+
+<div class="row">
+    <div class="col-lg-12">
+        <div class="card">
+            <div class="card-body">
+                <form id="addCustomer">
+                    <div class="form-body">
+                        <h3 class="box-title m-t-40">Add Customers</h3>
+                        <hr>
+
+                        <div id="addcustomer_fields"></div>
+                        <div class="row">
+
+                            <div class="col-md-12 ">
+                                <div class="form-group">
+
+                                    <label class="control-label">Name</label>
+
+                                    <input type="text" class="form-control" id="name" name="Name[]" />
+
+
+                                    <label>Street</label>
+                                    <input type="text" class="form-control" id="calories" name="Calories[]" />
+
+
+                                </div>
+                                <div class="input-group-append">
+                                    <button class="btn btn-success" type="button" onclick="addcustomer_fields();"><i class="fa fa-plus"></i></button>
+                                </div>
+                            </div>
+
+
+                        </div>
+                    </div>
+                    <div class="form-actions">
+                        <button type="submit" class="btn btn-success" id="btnsubmit"> <i class="fa fa-check"></i> Save</button>
+                        <button type="button" class="btn btn-inverse">Cancel</button>
+                    </div>
+
+
+                </form>
+            </div>
+        </div>
+
+    </div>
+
+</div>
+
+
+
+
+<script>
+    $(document).ready(function () {
+        var vm = {
+            name: [],
+            calories: [],
+        };
+    })
+    var room = 1;
+
+    function addcustomer_fields() {
+
+        room++;
+        var objTo = document.getElementById('addcustomer_fields')
+        var divtest = document.createElement("div");
+        divtest.setAttribute("class", "form-group removeclass" + room);
+        var rdiv = 'removeclass' + room;
+        divtest.innerHTML = ' <div class="row"><div class="col-md-12"><div class="form-group"><label class="control-label">Name</label></div></div><div class="input-group-append"> <button class="btn btn-danger" type="button" onclick="remove_addcustomer_fields(' + room + ');"> <i class="fa fa-minus"></i> </button></div></div></div></div><div class="clear"></div></row>';
+
+        objTo.appendChild(divtest)
+    }
+
+
+
+
+
+    function remove_addcustomer_fields(rid) {
+        $('.removeclass' + rid).remove();
+    }
+
+    $("#addCustomer").submit(function (e) {
+        e.preventDefault();
+        var row = room;
+        var cust = {};
+        cust.name = row.name;
+        cust.address = row.address;
+        cust.city = row.city;
+        cust.state = row.state;
+        cust.postcode = row.postcode;
+        cust.phonenumber = row.phonenumber;
+        vm.push(cust);
+
+
+        $.ajax({
+            url: "api/AddCustomers",
+            method: "post",
+            data: vm
+        })
+            .done(function () {
+                console.log("done");
+            })
+            .fail(function () {
+
+            });
+    });
+
+
+
+</script>

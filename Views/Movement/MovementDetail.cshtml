@@ -1,0 +1,110 @@
+﻿@model MyFitness.Models.ProgramDetailViewModel
+@{
+    ViewBag.Title = "MovementDetail";
+}
+
+
+
+<div class="row el-element-overlay">
+    <div class="col-md-12">
+        <h4 class="card-title">Movements Detail</h4>
+
+    </div>
+    @if (Model.detailProg.Count() > 0)
+    {
+        <!-- column -->
+        foreach (var prog in Model.detailProg)
+        {
+            <div class="col-lg-3 col-md-6">
+                <div class="card">
+                    <div class="el-card-item">
+                        <div class="el-card-avatar el-overlay-1">
+                            <input type="hidden" hidden="hidden" value="@prog.Id" name="id" />
+                            <img src="@prog.FotoGerakan" alt="user" />
+                            <div class="el-overlay">
+                                <ul class="el-info">
+                                    <li><a class="btn default btn-outline image-popup-vertical-fit" href="/Movement/DetailMovement/@prog.Id"><i class="icon-magnifier"></i></a></li>
+                                    <li><a class="btn default btn-outline" href="javascript:;" onclick="editMovement(@prog.Id)"><i class="icon-pencil"></i></a></li>
+                                </ul>
+                            </div>
+                        </div>
+                        <div class="el-card-content">
+                            <h3 class="box-title">@prog.Langkah</h3> <small>@prog.Deskripsi</small>
+                            <br />
+                        </div>
+                    </div>
+                </div>
+            </div>
+        }
+    }
+</div>
+
+
+
+<div class="form-group text-center">
+
+    <div class="col-xs-12 p-b-20">
+        <a href="javascript:;" id="buttonaddmovement" onclick="addDetailMovement(@ViewBag.ProgId)" class="btn btn-block btn-md btn-info btn-rounded">
+            Add Detail Movement
+        </a>
+
+    </div>
+</div>
+<!-- Row -->
+<!-- End Row -->
+<!-- Row -->
+<script type="text/javascript">
+
+
+
+            $(function () {
+                $(".preloader").fadeOut();
+            });
+            $(function () {
+                $('[data-toggle="tooltip"]').tooltip()
+            });
+            // ==============================================================
+            // Login and Recover Password
+            // ==============================================================
+            $('#to-recover').on("click", function () {
+                $("#loginform").slideUp();
+                $("#recoverform").fadeIn();
+            });
+
+           
+        function editMovement(id) {
+        var link = '@Url.Action("EditMovement", "Movement", new { id = "replace"})';
+        link = link.replace("replace", id);
+        $('#EditMovementModal').load(link);
+        $("#EditMovementModal").modal();
+        $("#success-alert").remove();
+    };
+
+    function addDetailMovement(id) {
+        var link = '@Url.Action("AddDetailMovement", "Movement", new { id = "replace" , encytype = "multipart/form-data"})';
+        link = link.replace("replace", id);
+        $('#AddDetailMovementModal').load(link);
+        $("#AddDetailMovementModal").modal();
+        $("#success-alert").remove();
+        };
+
+
+        var error = @((TempData["Error"] != null).ToString().ToLower());
+         var success = @((TempData["Success"] != null).ToString().ToLower());
+        var successmsg = '@(TempData["Success"])';
+        var errormsg = '@(TempData["Error"])';
+        window.onload = function () {
+
+        }
+
+
+
+
+
+
+
+</script>
+<div class="modal" id="AddDetailMovementModal" role="dialog" aria-labelledby="editModallabel" aria-hidden="false">
+</div>
+<div class="modal" id="EditMovementModal" role="dialog" aria-labelledby="editModallabel" aria-hidden="false">
+</div>
