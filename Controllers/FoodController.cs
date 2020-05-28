@@ -20,7 +20,11 @@ namespace MyFitness.Controllers
         // GET: Food
         public ActionResult Index()
         {
-            return View();
+            if(User.IsInRole("Admin"))
+                return View();
+            return View("/Views/Food/UserIndex.cshtml");
+           
+           
         }
 
         public ActionResult MyFood()

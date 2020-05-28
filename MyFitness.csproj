@@ -212,6 +212,10 @@
     <Compile Include="Migrations\202005230558083_b.Designer.cs">
       <DependentUpon>202005230558083_b.cs</DependentUpon>
     </Compile>
+    <Compile Include="Migrations\202005271340197_o.cs" />
+    <Compile Include="Migrations\202005271340197_o.Designer.cs">
+      <DependentUpon>202005271340197_o.cs</DependentUpon>
+    </Compile>
     <Compile Include="Migrations\Configuration.cs" />
     <Compile Include="Models\AccountViewModels.cs" />
     <Compile Include="Models\AddDetailProgram.cs" />
@@ -1369,6 +1373,9 @@
     <Content Include="Views\Movement\_editMovement.cshtml" />
     <Content Include="Views\Movement\MovementDetail.cshtml" />
     <Content Include="Views\Movement\_addDetailMovement.cshtml" />
+    <Content Include="Views\Food\UserIndex.cshtml" />
+    <Content Include="Views\Account\RegisterAdmin.cshtml" />
+    <Content Include="Views\Account\EditUserInfo.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />
@@ -1398,6 +1405,9 @@
     </EmbeddedResource>
     <EmbeddedResource Include="Migrations\202005230558083_b.resx">
       <DependentUpon>202005230558083_b.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\202005271340197_o.resx">
+      <DependentUpon>202005271340197_o.cs</DependentUpon>
     </EmbeddedResource>
   </ItemGroup>
   <PropertyGroup>

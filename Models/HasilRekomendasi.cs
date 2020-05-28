@@ -10,10 +10,7 @@ namespace MyFitness.Models
     public class HasilRekomendasi
     {
         public int Id { get; set; }
-        public int Hari { get; set; }
-        public int Set { get; set; }
-        public int Repetisi { get; set; }
-        
+       
         public int ProgramId { get; set; }
         [ForeignKey("ProgramId")]
         public JenisProgram JenisProgram { get; set; }

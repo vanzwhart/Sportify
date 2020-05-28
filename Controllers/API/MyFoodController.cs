@@ -51,7 +51,8 @@ namespace MyFitness.Controllers.API
         [HttpDelete]
         public void DeleteMyFood(int id)
         {
-            var myfoodInDb = _context.MyFood.SingleOrDefault(c => c.FoodId == id);
+            var iduser = User.Identity.GetUserId();
+            var myfoodInDb = _context.MyFood.FirstOrDefault(c => c.MyFoodId == id && c.UserId == iduser);
 
             if (myfoodInDb == null)
             {
