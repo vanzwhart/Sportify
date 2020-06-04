@@ -8,51 +8,56 @@
         <h4 class="card-title">Movements</h4>
 
     </div>
-    @if (Model.programs.Count() > 0)
+    @if (Model.programs != null)
     {
-        <!-- column -->
-        foreach (var prog in Model.programs)
+        if (Model.programs.Count() > 0)
         {
-            <div class="col-lg-3 col-md-6">
-                <div class="card">
-                    <div class="el-card-item">
-                        <div class="el-card-avatar el-overlay-1">
-                            <input type="hidden" hidden="hidden" value="@prog.Id" name="id" />
-                            <img src="@prog.FotoGerakan" alt="user" />
-                            <div class="el-overlay">
-                                <ul class="el-info">
-                                    <li><a class="btn default btn-outline image-popup-vertical-fit" href="/Movement/DetailMovement/@prog.Id"><i class="icon-magnifier"></i></a></li>
-                                    @if (User.IsInRole("Admin"))
-                                    {
-                                    <li><a class="btn default btn-outline" href="javascript:;" onclick="editMovement(@prog.Id)"><i class="icon-pencil"></i></a></li>
-                                    }
-                                </ul>
+            <!-- column -->
+            foreach (var prog in Model.programs)
+            {
+                <div class="col-lg-3 col-md-6">
+                    <div class="card">
+                        <div class="el-card-item">
+                            <div class="el-card-avatar el-overlay-1">
+                                <input type="hidden" hidden="hidden" value="@prog.Id" name="id" />
+                                <img src="@prog.FotoGerakan" alt="user" />
+                                <div class="el-overlay">
+                                    <ul class="el-info">
+                                        <li><a class="btn default btn-outline image-popup-vertical-fit" href="/Movement/DetailMovement/@prog.Id"><i class="icon-magnifier"></i></a></li>
+                                        @if (User.IsInRole("Admin"))
+                                        {
+                                            
+                                            <li><a class="btn default btn-outline" href="javascript:;" onclick="editMovement(@prog.Id)"><i class="icon-pencil"></i></a></li>
+                                            <li><a class="btn default btn-outline" href="javascript:;" onclick="deleteMovement(@prog.Id)"><i class="icon-trash"></i></a></li>
+                                        }
+                                    </ul>
+                                </div>
                             </div>
-                        </div>
-                        <div class="el-card-content">
-                            <h3 class="box-title">@prog.NamaProgram</h3> <small>@prog.Deskripsi</small>
-                            <br />
+                            <div class="el-card-content">
+                                <h3 class="box-title">@prog.NamaProgram</h3> <small>@prog.Deskripsi</small>
+                                <br />
+                            </div>
                         </div>
                     </div>
                 </div>
-            </div>
+            }
         }
     }
 </div>
 
 
-    @if (User.IsInRole("Admin"))
-    {
-         <div class="form-group text-center">
+@if (User.IsInRole("Admin"))
+{
+    <div class="form-group text-center">
 
-              <div class="col-xs-12 p-b-20">
-                 <a href="javascript:;" id="buttonaddmovement" class="btn btn-block btn-md btn-info btn-rounded">
+        <div class="col-xs-12 p-b-20">
+            <a href="javascript:;" id="buttonaddmovement" class="btn btn-block btn-md btn-info btn-rounded">
                 Add Movements
-                </a>
+            </a>
 
-              </div>
+        </div>
     </div>
-    }
+}
 <!-- Row -->
 <!-- End Row -->
 <!-- Row -->
@@ -85,7 +90,18 @@
         $('#EditMovementModal').load(link);
         $("#EditMovementModal").modal();
         $("#success-alert").remove();
-        };
+    };
+
+    function deleteMovement(id) {
+        bootbox.confirm("Are You sure want to delete this movement ?", function (result) {
+            if (result) {
+                window.location.href = '@Url.Action("DeleteMovement","Movement")/' + id;
+
+            }
+        });
+    };
+       
+
 
 
         var error = @((TempData["Error"] != null).ToString().ToLower());

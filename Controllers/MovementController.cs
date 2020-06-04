@@ -9,6 +9,7 @@ using System.Web.Mvc;
 
 namespace MyFitness.Controllers
 {
+   
     public class MovementController : Controller
     {
         private ApplicationDbContext _context;
@@ -96,6 +97,8 @@ namespace MyFitness.Controllers
             return RedirectToAction("Index", "Movement");
         }
 
+
+
         [HttpGet]
         public ActionResult EditMovement(int? id)
         {
@@ -107,6 +110,94 @@ namespace MyFitness.Controllers
             editMovement.JenisAlat = prog.JenisAlat;
             editMovement.Tingkatan = prog.Tingkatan;
             return PartialView("_editMovement", editMovement);
+        }
+
+        [AllowAnonymous]
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        public ActionResult EditMovement(AddProgram model)
+        {
+           
+            if (ModelState.IsValid)
+            {
+                try
+                {
+                    JenisProgram prog = _context.JenisPrograms.FirstOrDefault(z => z.Id == model.Id);
+                    prog.NamaProgram = model.NamaProgram;
+                    prog.Deskripsi = model.Deskripsi;
+                    prog.JenisKelamin = model.JenisKelamin;
+                    prog.JenisAlat = model.JenisAlat;
+                    prog.Tingkatan = model.Tingkatan;
+                    prog.Punggung = model.Punggung;
+                    prog.Perut = model.Perut;
+                    prog.LenganTricep = model.LenganTricep;
+                    prog.LenganBicep = model.LenganBicep;
+                    prog.Kaki = model.Kaki;
+                    prog.Dada = model.Dada;
+                    prog.Bahu = model.Bahu;
+                    prog.Bokong = model.Bokong;
+
+
+                    if (model.FotoGerakan != null)
+                    {
+                        if (model.FotoGerakan.ContentLength > 0)
+                        {
+                            var fileName = Path.GetFileName(model.FotoGerakan.FileName);
+                            var guid = Guid.NewGuid().ToString();
+                            var folderPath = Server.MapPath("~/uploads/" + model.NamaProgram);
+                            if (!Directory.Exists(folderPath))
+                            {
+                                Directory.CreateDirectory(folderPath);
+                            }
+                            var path = Path.Combine(folderPath, fileName);
+                            model.FotoGerakan.SaveAs(path);
+                            string fl = path.Substring(path.LastIndexOf("\\"));
+                            string[] split = fl.Split('\\');
+                            string newpath = split[1];
+                            string imagepath = "/uploads/" + model.NamaProgram + "/" + newpath;
+                            prog.FotoGerakan = imagepath;
+                        }
+                    }
+                    _context.SaveChanges();
+                   
+                }
+                catch (Exception e)
+                {
+                    TempData["Error"] = e.Message;
+                }
+            }
+
+
+
+            return RedirectToAction("Index", "Movement");
+        }
+
+        [HttpGet]
+        public ActionResult EditDetailMovement(int? id)
+        {
+            DetailProgramViewModel prog = _context.DetailPrograms.FirstOrDefault(z => z.Id == id);
+            AddDetailProgram editMovement = new AddDetailProgram();
+            editMovement.Deskripsi = prog.Deskripsi;
+            editMovement.Langkah = prog.Langkah;
+            editMovement.ProgramId = prog.ProgramId;
+            editMovement.Id = prog.Id;
+            return PartialView("_editDetailMovement", editMovement);
+        }
+
+        public ActionResult DeleteDetailMovement(int? id)
+        {
+            DetailProgramViewModel prog = _context.DetailPrograms.FirstOrDefault(z => z.Id == id);
+            _context.DetailPrograms.Remove(prog);
+            _context.SaveChanges();
+            return RedirectToAction("Index", "Movement");
+        }
+
+        public ActionResult DeleteMovement(int id)
+        {
+            JenisProgram prog = _context.JenisPrograms.FirstOrDefault(z => z.Id == id);
+            _context.JenisPrograms.Remove(prog);
+            _context.SaveChanges();
+            return RedirectToAction("Index", "Movement");
         }
 
 
@@ -179,5 +270,59 @@ namespace MyFitness.Controllers
             }
             return RedirectToAction("DetailMovement", "Movement", new { id = model.ProgramId});
         }
+
+
+
+        [AllowAnonymous]
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        public ActionResult EditDetailMovement(AddDetailProgram model)
+        {
+
+            if (ModelState.IsValid)
+            {
+                try
+                {
+
+                    DetailProgramViewModel prog = _context.DetailPrograms.FirstOrDefault(x => x.Id == model.Id);
+                    prog.Langkah = model.Langkah;
+                    prog.Deskripsi = model.Deskripsi;
+                    prog.ProgramId = model.ProgramId;
+
+
+
+                    if (model.FotoGerakan != null)
+                    {
+                        if (model.FotoGerakan.ContentLength > 0)
+                        {
+                            var fileName = Path.GetFileName(model.FotoGerakan.FileName);
+                            var guid = Guid.NewGuid().ToString();
+                            var folderPath = Server.MapPath("~/uploads/" + model.Id);
+                            if (!Directory.Exists(folderPath))
+                            {
+                                Directory.CreateDirectory(folderPath);
+                            }
+                            var path = Path.Combine(folderPath, fileName);
+                            model.FotoGerakan.SaveAs(path);
+                            string fl = path.Substring(path.LastIndexOf("\\"));
+                            string[] split = fl.Split('\\');
+                            string newpath = split[1];
+                            string imagepath = "/uploads/" + model.Id + "/" + newpath;
+                            prog.FotoGerakan = imagepath;
+                        }
+                    }
+                    
+                    _context.SaveChanges();
+                    
+                }
+                catch (Exception e)
+                {
+                    TempData["Error"] = e.Message;
+                }
+            }
+            return RedirectToAction("DetailMovement", "Movement", new { id = model.ProgramId });
+        }
     }
 }
+
+

@@ -1376,6 +1376,7 @@
     <Content Include="Views\Food\UserIndex.cshtml" />
     <Content Include="Views\Account\RegisterAdmin.cshtml" />
     <Content Include="Views\Account\EditUserInfo.cshtml" />
+    <Content Include="Views\Movement\_editDetailMovement.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />

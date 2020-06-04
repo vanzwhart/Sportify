@@ -261,22 +261,18 @@ namespace MyFitness.Controllers
 
         public ActionResult EditUserInfo(UserInfo info)
         {
-            if (ModelState.IsValid)
-            {
+            
                 try
                 {
                     var userid = User.Identity.GetUserId();
-                    var userinfoid = _context.UserInfo.FirstOrDefault(x => x.UserId == userid);
-                    _context.UserInfo.Remove(userinfoid);
-                    _context.SaveChanges();
-
-                    UserInfo userDB = new UserInfo();
-                    userDB.UserId = userid;
+                    var userDB = _context.UserInfo.FirstOrDefault(x => x.UserId == userid);
+                  
+                   
+                   
                     userDB.BeratBadan = info.BeratBadan;
-                    userDB.tanggal_lahir = info.tanggal_lahir;
                     userDB.Punggung = info.Punggung;
                     userDB.Perut = info.Perut;
-                    userDB.NamaLengkap = info.NamaLengkap;
+                   
                     userDB.LenganTricep = info.LenganTricep;
                     userDB.LenganBicep = info.LenganBicep;
                     userDB.Kaki = info.Kaki;
@@ -285,7 +281,7 @@ namespace MyFitness.Controllers
                     userDB.Bahu = info.Bahu;
                     userDB.Tingkatan = info.Tingkatan;
                     userDB.TinggiBadan = info.TinggiBadan;
-                    userDB.JenisKelamin = info.JenisKelamin;
+                   
                     userDB.tanggal_update = DateTime.Now;
                     int tinggi = (info.TinggiBadan / 100) * (info.TinggiBadan / 100);
                     int berat = info.BeratBadan;
@@ -303,7 +299,7 @@ namespace MyFitness.Controllers
                         userDB.BMI = "Overweight";
                     }
 
-                    _context.UserInfo.Add(userDB);
+                    _context.SaveChanges();
 
 
                     DateTime Now = DateTime.Today;
@@ -503,7 +499,7 @@ namespace MyFitness.Controllers
                 {
                     return View();
                 }
-            }
+            
             return RedirectToAction("Index", "Home");
         }
     }

@@ -1,0 +1,59 @@
+﻿@model MyFitness.Models.AddDetailProgram
+
+
+<div class="modal-dialog" role="document">
+    @using (Html.BeginForm("EditDetailMovement", "Movement", FormMethod.Post, new { enctype = "multipart/form-data" }))
+    {
+        @Html.AntiForgeryToken()
+        <div class="modal-content">
+            <div class="modal-header">
+                <h4 class="modal-title" id="exampleModalLabel">Edit Movements</h4>
+                <button type="button" class="close modal-close-button" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+
+            <div class="modal-body">
+
+                <form>
+
+                    <div class="col-md-6">
+                        <div class="form-group">
+                            <label class="control-label">Type</label>
+                            <select name="Langkah" class="form-control custom-select">
+                                <option value="Step 1">Step 1</option>
+                                <option value="Step 2">Step 2</option>
+                                <option value="Step 3">Step 3</option>
+                                <option value="Step 4">Step 4</option>
+                            </select>
+                            <small class="form-control-feedback"> Select Step </small>
+                        </div>
+                    </div>
+
+                    <div class="form-group">
+                        @Html.LabelFor(m => m.Deskripsi, new { @class = "control-label" })
+                        @Html.TextAreaFor(m => m.Deskripsi, new { @class = "form-control"})
+                    </div>
+
+                    <div class="form-group">
+                        @Html.LabelFor(m => m.FotoGerakan, new { @class = "control-label" })
+                        @Html.TextBoxFor(model => model.FotoGerakan, new { type = "file", @class = "input-file form-control" })
+                        <input type="hidden" hidden="hidden" value="@Model.ProgramId" name="ProgramId" />
+                        <input type="hidden" value="@Model.Id" name="Id"/>
+
+                    </div>
+                   
+
+
+                </form>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+                <button type="submit" class="btn btn-primary">Submit</button>
+            </div>
+        </div>
+    }
+</div>
+
+
+

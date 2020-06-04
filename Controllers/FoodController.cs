@@ -35,17 +35,33 @@ namespace MyFitness.Controllers
             var userinfo = _context.UserInfo.FirstOrDefault(x => x.UserId == iduser);
             DateTime Now = DateTime.Today;
             int umur = Now.Year - userinfo.tanggal_lahir.Year;
-            int recCalories = 0;
+            double recCalories = 0;
+            double tde = 0;
             if(userinfo.JenisKelamin == "Male")
             { 
-                recCalories = 88 + (13 * userinfo.BeratBadan) + (5 * userinfo.TinggiBadan) - (6 * umur);
+                recCalories = 88.382 + (13.397 * userinfo.BeratBadan) + (4.799 * userinfo.TinggiBadan) - (5.677 * umur);
+              
             }
             else
             {
-               recCalories = 448 + (9 * userinfo.BeratBadan) + (3 * userinfo.TinggiBadan) - (4 * umur);
+               recCalories = 447.593 + (9.247 * userinfo.BeratBadan) + (3.098 * userinfo.TinggiBadan) - (4.33 * umur);
             }
 
-            ViewBag.RecCalories = recCalories;
+            if (userinfo.Tingkatan == 1)
+            {
+                tde = recCalories * 1.2;
+            }
+            else if (userinfo.Tingkatan == 2)
+            {
+                tde = recCalories * 1.375;
+            }
+            else
+            {
+                tde = recCalories * 1.55;
+            }
+
+            ViewBag.Tde = Math.Round(tde,0);
+            ViewBag.RecCalories = Math.Round(recCalories,0);
 
             var myCalories = _context.MyFood.Include(a => a.food).Where(x => x.UserId == iduser).ToList();
             var totCal = 0;

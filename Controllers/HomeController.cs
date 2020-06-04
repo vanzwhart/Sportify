@@ -22,15 +22,25 @@ namespace MyFitness.Controllers
         public ActionResult Index()
         {
             var userid = User.Identity.GetUserId();
+            if (User.IsInRole("Admin"))
+            {
+                var allprog = _context.JenisPrograms.ToList();
+                var viewd = new AllProgramViewModel
+                {
+                    programs = allprog
+                };
+                return View("/Views/Movement/Index.cshtml",viewd);
+            }
             var exist = _context.UserInfo.Where(x => x.UserId == userid).ToList();
             if (exist.Count == 0)
             {
-                return View("/Views/Account/UserInfo.cshtml");            
+                return View("/Views/Account/UserInfo.cshtml");
             }
+            
 
             var allprograms = _context.HasilRekomendasis.Include(x => x.JenisProgram).Where(a => a.UserId == userid).ToList().Select(a => a.JenisProgram);
-            
-            
+
+
             var viewmodel = new AllProgramViewModel
             {
                 programs = allprograms
@@ -40,30 +50,30 @@ namespace MyFitness.Controllers
             DateTime Now = DateTime.Today;
             int umur = Now.Year - uss.tanggal_lahir.Year;
 
-            if(umur <= 30 && uss.BMI != "Normal" || umur > 30 && umur <= 40 && uss.BMI == "Normal")
+            if (umur <= 30 && uss.BMI != "Normal" || umur > 30 && umur <= 40 && uss.BMI == "Normal")
             {
-                if(uss.Tingkatan == 1)
+                if (uss.Tingkatan == 1)
                 {
                     ViewBag.Set = "3 Set 10 Repetisi";
                 }
-                else if(uss.Tingkatan == 2)
+                else if (uss.Tingkatan == 2)
                 {
                     ViewBag.Set = "4 Set 10 Repetisi";
                 }
                 ViewBag.Set = "4 Set 12 Repetisi";
             }
-            else if(umur <= 30 && uss.BMI == "Normal")
+            else if (umur <= 30 && uss.BMI == "Normal")
             {
-                if(uss.Tingkatan == 1)
+                if (uss.Tingkatan == 1)
                 {
                     ViewBag.Set = "3 Set 12 Repetisi";
                 }
                 else if (uss.Tingkatan == 2)
-                { 
+                {
                     ViewBag.Set = "4 Set 12 Repetisi";
                 }
                 ViewBag.Set = "5 Set 10 Repetisi";
-                
+
             }
             else if (umur > 30 && umur <= 40 && uss.BMI != "Normal" || umur > 40 && umur <= 50 && uss.BMI == "Normal")
             {
@@ -91,10 +101,10 @@ namespace MyFitness.Controllers
                 ViewBag.Set = "3 Set 12 Repetisi";
 
             }
-      
 
 
-            return View("/Views/Home/Index.cshtml",viewmodel);
+
+            return View("/Views/Home/Index.cshtml", viewmodel);
         }
 
         public ActionResult About()
@@ -112,13 +122,13 @@ namespace MyFitness.Controllers
         }
 
 
-   
+
         [Authorize]
         public ActionResult UserInfo()
         {
             return View("/Views/Account/UserInfo.cshtml");
         }
-        
-       
+
+
     }
 }

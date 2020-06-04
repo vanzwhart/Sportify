@@ -23,10 +23,11 @@
                             <img src="@prog.FotoGerakan" alt="user" />
                             <div class="el-overlay">
                                 <ul class="el-info">
-                                    <li><a class="btn default btn-outline image-popup-vertical-fit" href="/Movement/DetailMovement/@prog.Id"><i class="icon-magnifier"></i></a></li>
-                                    @if(User.IsInRole("Admin"))
-                                    { 
-                                    <li><a class="btn default btn-outline" href="javascript:;" onclick="editMovement(@prog.Id)"><i class="icon-pencil"></i></a></li>
+                                    
+                                    @if (User.IsInRole("Admin"))
+                                    {
+                                        <li><a class="btn default btn-outline" href="javascript:;" onclick="editDetailMovement(@prog.Id)"><i class="icon-pencil"></i></a></li>
+                                        <li><a class="btn default btn-outline" href="javascript:;" onclick="deleteDetailMovement(@prog.Id)"><i class="icon-trash"></i></a></li>
                                     }
                                 </ul>
                             </div>
@@ -78,11 +79,11 @@
             });
 
 
-        function editMovement(id) {
-        var link = '@Url.Action("EditMovement", "Movement", new { id = "replace"})';
+        function editDetailMovement(id) {
+        var link = '@Url.Action("EditDetailMovement", "Movement", new { id = "replace"})';
         link = link.replace("replace", id);
-        $('#EditMovementModal').load(link);
-        $("#EditMovementModal").modal();
+        $('#EditDetailMovementModal').load(link);
+        $("#EditDetailMovementModal").modal();
         $("#success-alert").remove();
     };
 
@@ -92,7 +93,16 @@
         $('#AddDetailMovementModal').load(link);
         $("#AddDetailMovementModal").modal();
         $("#success-alert").remove();
-        };
+    };
+
+     function deleteDetailMovement(id) {
+        bootbox.confirm("Are You sure want to delete this movement ?", function (result) {
+            if (result) {
+                window.location.href = '@Url.Action("DeleteDetailMovement","Movement")/' + id;
+
+            }
+        });
+    };
 
 
         var error = @((TempData["Error"] != null).ToString().ToLower());
@@ -112,5 +122,5 @@
 </script>
 <div class="modal" id="AddDetailMovementModal" role="dialog" aria-labelledby="editModallabel" aria-hidden="false">
 </div>
-<div class="modal" id="EditMovementModal" role="dialog" aria-labelledby="editModallabel" aria-hidden="false">
+<div class="modal" id="EditDetailMovementModal" role="dialog" aria-labelledby="editModallabel" aria-hidden="false">
 </div>

@@ -24,7 +24,7 @@
     <link href="~/Contentpro/css/style.css" rel="stylesheet">
     <link href="../assets/plugins/Magnific-Popup-master/dist/magnific-popup.css" rel="stylesheet">
     <link href="~/Contentpro/css/pages/user-card.css" rel="stylesheet">
-   
+
     <link href="~/Contentpro/plugins/toast-master/css/jquery.toast.css" rel="stylesheet">
     <link href="https://cdn.datatables.net/1.10.20/css/jquery.dataTables.min.css" rel="stylesheet">
     <link href="https://cdn.datatables.net/responsive/2.2.3/css/responsive.bootstrap4.min.css" rel="stylesheet" />
@@ -84,40 +84,23 @@
                     <!-- User profile and search -->
                     <!-- ============================================================== -->
 
-                    <a>Hi, </a>
+                    
                     @if (User.Identity.IsAuthenticated)
                     {
                         using (Html.BeginForm("LogOff", "Account", FormMethod.Post, new { id = "logoutForm" }))
                         {
                             @Html.AntiForgeryToken()
-                            <ul class="navbar-nav my-lg-0">
+                            <div class="navbar-nav my-lg-0">
 
                                 <!-- Profile -->
                                 <!-- ============================================================== -->
-                                <li class="nav-item dropdown">
-                                    <a class="nav-link dropdown-toggle waves-effect waves-dark" href="#" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false"><img src="" alt="user" class="profile-pic" /></a>
-                                    <div class="dropdown-menu dropdown-menu-right animated flipInY">
-                                        <ul class="dropdown-user">
-                                            <li>
-                                                <div class="dw-user-box">
-                                                    <div class="u-img"><img src="" alt="user"></div>
-                                                    <div class="u-text">
-                                                        <h4></h4>
+                                
+                                  
+                                   
+                                            <a href="javascript:document.getElementById('logoutForm').submit()">Log off</a>
 
-                                                    </div>
-                                                </div>
-                                            </li>
-                                            <li role="separator" class="divider"></li>
-                                            <li><a href="#"><i class="ti-user"></i> Change Account</a></li>
-                                            <li role="separator" class="divider"></li>
-                                            <li><a href="#"><i class="ti-settings"></i> Account Setting</a></li>
-                                            <li role="separator" class="divider"></li>
-                                            <li><a href="javascript:document.getElementById('logoutForm').submit()">Log off</a></li>
-
-                                        </ul>
-                                    </div>
-                                </li>
-                            </ul>
+                                       
+                            </div>
                         }
                     }
 
@@ -137,19 +120,21 @@
                 <nav class="sidebar-nav">
                     <ul id="sidebarnav">
 
-
-                        <li>
-                            <a class="has-arrow waves-effect waves-dark" href="#" aria-expanded="false"><i class="fas fa-address-book"></i><span class="hide-menu">MyExercises</span></a>
-                            <ul aria-expanded="false" class="collapse">
-                                <li><a href="/Account/EditUserInfo">Edit Exercises </a></li>
-                                <li><a href="/Home/Index">Exercises</a></li>
-                            </ul>
-                        </li>
+                        @if (!User.IsInRole("Admin"))
+                        {
+                            <li>
+                                <a class="has-arrow waves-effect waves-dark" href="#" aria-expanded="false"><i class="fas fa-address-book"></i><span class="hide-menu">MyExercises</span></a>
+                                <ul aria-expanded="false" class="collapse">
+                                    <li><a href="/Account/EditUserInfo">Edit Exercises </a></li>
+                                    <li><a href="/Home/Index">Exercises</a></li>
+                                </ul>
+                            </li>
+                        }
                         <li>
                             <a class="has-arrow waves-effect waves-dark" href="#" aria-expanded="false"><i class="fas fa-clipboard-list"></i><span class="hide-menu"> Movement</span></a>
                             <ul aria-expanded="false" class="collapse">
                                 <li><a href="/Movement/Index">All Movements</a></li>
-                               
+
                             </ul>
                         </li>
                         <li>
@@ -160,15 +145,15 @@
 
                             </ul>
                         </li>
-                        @if(User.IsInRole("Admin"))
+                        @if (User.IsInRole("Admin"))
                         {
-                        <li>
-                            <a class="has-arrow waves-effect waves-dark" href="#" aria-expanded="false"><i class="fas fa-registered"></i><span class="hide-menu"> Register</span></a>
-                            <ul aria-expanded="false" class="collapse">
-                                <li><a href="/Account/RegisterAdmin">Register Admin</a></li>
-                              
-                            </ul>
-                        </li>
+                            <li>
+                                <a class="has-arrow waves-effect waves-dark" href="#" aria-expanded="false"><i class="fas fa-registered"></i><span class="hide-menu"> Register</span></a>
+                                <ul aria-expanded="false" class="collapse">
+                                    <li><a href="/Account/RegisterAdmin">Register Admin</a></li>
+
+                                </ul>
+                            </li>
                         }
 
                     </ul>
